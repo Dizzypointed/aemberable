@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Help from "./views/Help.vue";
+import Start from "./views/Start.vue";
+import Decks from "./views/Decks.vue";
+import Deck from "./views/Deck.vue";
 
 Vue.use(Router);
 
@@ -10,8 +13,17 @@ export default new Router({
   routes: [
     {
       path: "/",
+      name: "start",
+      component: Start,
+      children: [
+        { path: "/decks/:id", name: "deck", component: Deck },
+        { path: "/decks", name: "decks", component: Decks }
+      ]
+    },
+    {
+      path: "/help",
       name: "home",
-      component: Home
+      component: Help
     },
     {
       path: "/about",
