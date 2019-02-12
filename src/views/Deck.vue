@@ -17,7 +17,6 @@
             <div>{{house.name}}</div>
             <div>
               <ul class="cards">
-                <!-- :style="{'background-image': 'url(' + card.front_image + ')'}" -->
                 <li class="card" v-for="card in cards(house)" :key="card.key">
                   <img :src="card.front_image" @click="enlarge(card, $event)">
                 </li>
@@ -26,9 +25,9 @@
           </div>
         </li>
       </ul>
-    </div>
-    <div id="enlarged" :hidden="!this.enlargedImage" @click="shrink()">
-      <img :src="enlargedImage">
+      <div id="enlarged" :hidden="!this.enlargedImage" @click="shrink()">
+        <img :src="enlargedImage">
+      </div>
     </div>
   </div>
 </template>
@@ -67,13 +66,18 @@ export default class Start extends Vue {
 
 <style lang="scss" scoped>
 .deck {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80vh;
   font-size: 1em;
   font-weight: 600;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 8px;
-  margin: 8px 0;
+  margin: 8px 0 0;
   background-color: #999;
 }
 
@@ -85,6 +89,7 @@ export default class Start extends Vue {
 
 .houses {
   display: flex;
+  overflow-y: auto;
 }
 
 .house {
@@ -95,6 +100,19 @@ export default class Start extends Vue {
   }
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
 .house-name {
   min-width: 70px;
   background-color: #525252;
@@ -112,18 +130,18 @@ export default class Start extends Vue {
   width: 33%;
   height: auto;
 
+  @media (max-width: 415px) {
+    width: 50%;
+  }
+
   img {
     width: 100%;
     height: auto;
-
-    // @media (max-width: 375px) {
-    //   width: 4.5em;
-    // }
+    cursor: pointer;
   }
 }
 .results {
   margin: 0 30px;
-  position: relative;
 
   @media (max-width: 415px) {
     margin: 0;
@@ -131,10 +149,6 @@ export default class Start extends Vue {
 }
 #enlarged {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   margin: auto;
   user-select: none;
 }

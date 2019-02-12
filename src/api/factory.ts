@@ -8,10 +8,12 @@ class _Deckfactory {
     return {
       id: deck.id,
       name: deck.name,
-      houses: deck.houses
-        .map(id => houses.find(h => h.id === id))
-        .filter(h => h),
-      cards: deck.cards.map(id => cards.find(c => c.id === id)).filter(c => c)
+      houses: <Array<House>>(
+        deck.houses.map(id => houses.find(h => h.id === id)).filter(h => h)
+      ),
+      cards: <Array<Card>>(
+        deck.cards.map(id => cards.find(c => c.id === id)).filter(c => c)
+      )
     };
   }
 

@@ -4,6 +4,6 @@ import Card from "./card";
 export default class ViewDeck {
   id = "";
   name = "";
-  cards: Card[] = [];
-  houses: House[] = [];
+  cards = new Array<Card>();
+  houses = new Array<House>();
 }
