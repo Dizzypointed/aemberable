@@ -15,35 +15,39 @@ export enum actions {
 }
 
 export enum mutations {
-  searchForDeck = "searchForDeck",
+  setQuery = "searchForDeck",
   storeDecks = "storeDecks",
   storeHouses = "storeHouses",
-  storeCards = "storeCards"
+  storeCards = "storeCards",
+  storeQueryResult = "queryResult"
 }
 
 export default new Vuex.Store({
   state: {
-    decks: {},
-    houses: {},
-    cards: {},
+    decks: <any>{},
+    houses: <any>{},
+    cards: <any>{},
     query: {
       selected: "",
-      data: {}
+      data: <any>{}
     }
   },
   getters: {
     getViewDecks: state => {
-      return Object.values(state.decks).map(d =>
+      return (state.query.data[state.query.selected] || []).map((id: string) =>
         Deckfactory.viewDeck(
-          d,
+          state.decks[id],
           Object.values(state.houses),
           Object.values(state.cards)
         )
       );
+    },
+    isQueryStored: state => {
+      return !!state.query.data[state.query.selected];
     }
   },
   mutations: {
-    [mutations.searchForDeck]: (state, query) => {
+    [mutations.setQuery]: (state, query) => {
       state.query.selected = query;
     },
     [mutations.storeDecks]: (state, payload: Deck[]) => {
@@ -81,17 +85,26 @@ export default new Vuex.Store({
           return result;
         })()
       };
+    },
+    [mutations.storeQueryResult]: (state, payload: Deck[]) => {
+      state.query.data = {
+        ...state.query.data,
+        ...{ [state.query.selected]: payload.map(d => d.id) }
+      };
     }
   },
   actions: {
     [actions.searchForDeck]: (context, query) => {
-      context.commit(mutations.searchForDeck, query);
-      keyforgeApi.search(query).then(r => {
-        context.commit(mutations.storeDecks, r.decks);
-        context.commit(mutations.storeHouses, r.houses);
-        context.commit(mutations.storeCards, r.cards);
-        console.log(r);
-      });
+      const _query = query.toLowerCase();
+      context.commit(mutations.setQuery, _query);
+      !context.getters.isQueryStored &&
+        keyforgeApi.search(_query).then(r => {
+          context.commit(mutations.storeQueryResult, r.decks);
+          context.commit(mutations.storeDecks, r.decks);
+          context.commit(mutations.storeHouses, r.houses);
+          context.commit(mutations.storeCards, r.cards);
+          console.log(r);
+        });
     }
   }
 });
