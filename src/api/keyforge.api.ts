@@ -1,26 +1,24 @@
+import { Observable, of } from "rxjs";
 import Vue from "vue";
 
-import rx, { Observable, of } from "rxjs";
-import { map, filter, tap } from "rxjs/operators";
-import { Deckfactory, Housefactory, Cardfactory } from "./factory";
+import { Cardfactory, Deckfactory, Housefactory } from "./factory";
+import httpMock from "./mock/mockHttp";
 
 export class KeyforgeApi {
   get http() {
-    return new Vue().$http;
+    return process.env.NODE_ENV === "development"
+      ? new httpMock()
+      : new Vue().$http;
   }
-
-  // , {
-  //   headers: {
-  //     "Access-Control-Allow-Origin": "localhost:8080"
-  //   }
-  // }
   search(q: string) {
-    const obs = new Observable();
-    // return of(
     return this.http
       .get(`https://www.keyforgegame.com/api/decks/?search=${q}&links=cards`)
       .then(
         r => {
+          if (!r.data || !r.data.data) {
+            console.log(r);
+            return;
+          }
           return {
             decks: r.data.data.map((d: any) => Deckfactory.deck(d)),
             houses: r.data._linked.houses.map((h: any) =>
