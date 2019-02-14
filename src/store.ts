@@ -99,6 +99,10 @@ export default new Vuex.Store({
       context.commit(mutations.setQuery, _query);
       !context.getters.isQueryStored &&
         keyforgeApi.search(_query).then(r => {
+          if (!r) {
+            return;
+          }
+
           context.commit(mutations.storeQueryResult, r.decks);
           context.commit(mutations.storeDecks, r.decks);
           context.commit(mutations.storeHouses, r.houses);
