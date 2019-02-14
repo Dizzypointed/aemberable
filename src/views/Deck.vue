@@ -1,5 +1,5 @@
 <template>
-  <div class="results">
+  <div class="main">
     <router-link :to="{name:'decks', query: {q: query}}">tillbaka</router-link>
     <div class="deck">
       <div class="deck-name">
@@ -140,7 +140,7 @@ export default class Start extends Vue {
     cursor: pointer;
   }
 }
-.results {
+.main {
   margin: 0 30px;
 
   @media (max-width: 415px) {

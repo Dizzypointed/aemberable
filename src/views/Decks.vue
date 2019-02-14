@@ -1,27 +1,33 @@
 <template>
-  <div class="results">
-    <ul class="decks">
-      <li v-for="deck in results" :key="deck.id">
-        <div class="deck" @click="showDetails(deck.id)">
-          <div class="deck-name">
-            <div>{{deck.name}}</div>
-            <div>
-              {{deck.cards.reduce((prev, card) => prev + card.amber, 0)}} &AElig;mber,
-              {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} power,
-              {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} armor
-            </div>
-          </div>
-          <ul class="houses">
-            <li class="house" v-for="house in deck.houses" :key="house.id">
-              <img :src="house.image">
-              <div class="house-name">
-                <div>{{house.name}}</div>
+  <div>
+    <form @submit="search($event)">
+      <input type="text" name="q" id="query" v-model="query">
+      <button type="submit" id="search">search</button>
+    </form>
+    <div class="results">
+      <ul class="decks">
+        <li v-for="deck in results" :key="deck.id">
+          <div class="deck" @click="showDetails(deck.id)">
+            <div class="deck-name">
+              <div>{{deck.name}}</div>
+              <div>
+                {{deck.cards.reduce((prev, card) => prev + card.amber, 0)}} &AElig;mber,
+                {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} power,
+                {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} armor
               </div>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
+            </div>
+            <ul class="houses">
+              <li class="house" v-for="house in deck.houses" :key="house.id">
+                <img :src="house.image">
+                <div class="house-name">
+                  <div>{{house.name}}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -31,6 +37,25 @@ import store, { actions } from "../store";
 import router from "@/router";
 @Component({})
 export default class Start extends Vue {
+  query = "";
+
+  created() {
+    this._updated();
+  }
+
+  _updated() {
+    this.query = <string>router.currentRoute.query.q;
+
+    this.query && store.dispatch(actions.searchForDeck, this.query);
+  }
+
+  search(e: Event) {
+    e.preventDefault();
+    router.push({ path: "/decks", query: { q: this.query } });
+
+    this._updated();
+  }
+
   get results() {
     return store.getters.getViewDecks;
   }

@@ -17,7 +17,7 @@ export default new Router({
       component: Start,
       children: [
         { path: "/decks/:id", name: "deck", component: Deck },
-        { path: "/decks", name: "decks", component: Decks }
+        { path: "/*", name: "decks", component: Decks }
       ]
     },
     {
