@@ -58,6 +58,7 @@ export default class Start extends Vue {
   enlarge(card: Card) {
     this.enlargedImage = card.front_image;
   }
+
   shrink() {
     this.enlargedImage = "";
   }

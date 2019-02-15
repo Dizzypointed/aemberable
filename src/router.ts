@@ -11,13 +11,14 @@ export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
+    { path: "/", redirect: "/decks" },
     {
       path: "/",
       name: "start",
       component: Start,
       children: [
         { path: "/decks/:id", name: "deck", component: Deck },
-        { path: "/*", name: "decks", component: Decks }
+        { path: "/decks", name: "decks", component: Decks }
       ]
     },
     {
