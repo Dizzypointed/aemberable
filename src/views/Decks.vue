@@ -116,7 +116,7 @@ export default class Start extends Vue {
 .results {
   margin: 0 30px;
 
-  @media (max-width: 375px) {
+  @media (max-width: 415px) {
     margin: 0;
   }
 }
