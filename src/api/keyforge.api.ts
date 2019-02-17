@@ -2,12 +2,12 @@ import { Observable, of } from "rxjs";
 import Vue from "vue";
 
 import { Cardfactory, Deckfactory, Housefactory } from "./factory";
-import httpMock from "./mock/mockHttp";
+import HttpMock from "./mock/mockHttp";
 
 export class KeyforgeApi {
   get http() {
     return process.env.NODE_ENV === "development"
-      ? new httpMock()
+      ? new HttpMock()
       : new Vue().$http;
   }
   search(q: string) {

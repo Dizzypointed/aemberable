@@ -1,11 +1,8 @@
 import { HttpResponse } from "vue-resource/types/vue_resource";
 
-export default class httpMock {
+export default class HttpMock {
   get(): PromiseLike<HttpResponse> {
-    const p: PromiseLike<HttpResponse> = new Promise(resolve =>
-      resolve(<HttpResponse>{ data: mockData })
-    );
-    return p;
+    return new Promise(resolve => resolve(<HttpResponse>{ data: mockData }));
   }
 }
 
