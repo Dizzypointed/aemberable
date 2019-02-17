@@ -11,7 +11,8 @@ import { Deckfactory } from "./api/factory";
 Vue.use(Vuex);
 
 export enum actions {
-  searchForDeck = "searchForDeck"
+  searchForDeck = "searchForDeck",
+  selectDeck = "selectDeck"
 }
 
 export enum mutations {
@@ -19,7 +20,8 @@ export enum mutations {
   storeDecks = "storeDecks",
   storeHouses = "storeHouses",
   storeCards = "storeCards",
-  storeQueryResult = "queryResult"
+  storeQueryResult = "queryResult",
+  setSelectedDeck = "setSelectedDeck"
 }
 
 export default new Vuex.Store({
@@ -30,21 +32,26 @@ export default new Vuex.Store({
     query: {
       selected: "",
       data: <any>{}
-    }
+    },
+    selectedDeck: ""
   },
   getters: {
-    getViewDecks: state => {
-      return (state.query.data[state.query.selected] || []).map((id: string) =>
+    getViewDecks: state =>
+      (state.query.data[state.query.selected] || []).map((id: string) =>
         Deckfactory.viewDeck(
           state.decks[id],
           Object.values(state.houses),
           Object.values(state.cards)
         )
-      );
-    },
-    isQueryStored: state => {
-      return !!state.query.data[state.query.selected];
-    }
+      ),
+    getViewDeck: state =>
+      Deckfactory.viewDeck(
+        state.decks[state.selectedDeck],
+        Object.values(state.houses),
+        Object.values(state.cards)
+      ),
+    isQueryStored: state => !!state.query.data[state.query.selected],
+    isDeckStored: state => !!state.decks[state.selectedDeck]
   },
   mutations: {
     [mutations.setQuery]: (state, query) => {
@@ -91,6 +98,9 @@ export default new Vuex.Store({
         ...state.query.data,
         ...{ [state.query.selected]: payload.map(d => d.id) }
       };
+    },
+    [mutations.setSelectedDeck]: (state, payload: string) => {
+      state.selectedDeck = payload;
     }
   },
   actions: {
@@ -107,7 +117,19 @@ export default new Vuex.Store({
           context.commit(mutations.storeDecks, r.decks);
           context.commit(mutations.storeHouses, r.houses);
           context.commit(mutations.storeCards, r.cards);
-          console.log(r);
+        });
+    },
+    [actions.selectDeck]: (context, id) => {
+      context.commit(mutations.setSelectedDeck, id);
+      !context.getters.isDeckStored &&
+        keyforgeApi.getDeck(id).then(r => {
+          if (!r) {
+            return;
+          }
+
+          context.commit(mutations.storeDecks, [r.deck]);
+          context.commit(mutations.storeHouses, r.houses);
+          context.commit(mutations.storeCards, r.cards);
         });
     }
   }

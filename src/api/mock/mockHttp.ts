@@ -1,12 +1,685 @@
 import { HttpResponse } from "vue-resource/types/vue_resource";
 
 export default class HttpMock {
-  get(): PromiseLike<HttpResponse> {
-    return new Promise(resolve => resolve(<HttpResponse>{ data: mockData }));
+  get(q: string): PromiseLike<HttpResponse> {
+    if (q.match(/decks\/\?/)) {
+      return new Promise(resolve =>
+        resolve(<HttpResponse>{ data: mockSearchData })
+      );
+    }
+
+    if (q.match(/decks\//)) {
+      return new Promise(resolve => {
+        resolve(<HttpResponse>{
+          data: mockDeckData
+        });
+      });
+    }
+
+    return new Promise(resolve => resolve(<HttpResponse>{}));
   }
 }
 
-const mockData = {
+const mockDeckData = {
+  data: {
+    name: 'Chieftain "Earthmother" Tillman',
+    expansion: 341,
+    power_level: 0,
+    chains: 0,
+    wins: 0,
+    losses: 0,
+    id: "ac400785-4d66-409d-8d48-a3ac606e3b10",
+    is_my_deck: false,
+    notes: [],
+    is_my_favorite: false,
+    is_on_my_watchlist: false,
+    casual_wins: 0,
+    casual_losses: 0,
+    _links: {
+      houses: ["Brobnar", "Dis", "Untamed"],
+      cards: [
+        "1ad71526-2782-4e56-a7b9-a0579fd63688",
+        "e9aefff3-acef-41e3-8258-182588f2b24c",
+        "3d650fe4-817a-4922-ba0f-297c1ebf816d",
+        "3d650fe4-817a-4922-ba0f-297c1ebf816d",
+        "3bdfeeec-0424-469b-b169-8e5ad6821e95",
+        "fc3d397a-3a51-4963-940c-6b43221b7667",
+        "d4f666db-302f-43d0-b0af-bd03071f92ce",
+        "0c3231e1-1230-4e7d-890e-6d3149125de2",
+        "d792387f-8392-49b3-ad7c-ccaf7552256f",
+        "bb0dc3dc-b591-447d-a181-1dc4907e3eaa",
+        "050b35ae-461a-4630-a8df-a60b2652fc2b",
+        "f79ad4c9-4c3c-461c-b0e7-c949bb46d270",
+        "10715fd2-031a-47ca-9119-9b7b2ec1d2c0",
+        "10715fd2-031a-47ca-9119-9b7b2ec1d2c0",
+        "be492d70-5c87-441e-8223-79fb2bce85c9",
+        "c1494f7b-eb87-4c64-9405-871579af1f80",
+        "d42dd1d0-3462-410f-b683-dd0768b84188",
+        "62c1aa96-491a-4dbe-a5a3-6895d55e2311",
+        "96548d93-b318-40e3-9f5c-3297c8070ebd",
+        "96548d93-b318-40e3-9f5c-3297c8070ebd",
+        "23a96d73-4eb2-4c45-9550-8207145eb587",
+        "f97316b0-75a4-45a4-8735-15e72cc1568c",
+        "ba26515f-1705-45ba-ae42-dcb65685a0ec",
+        "c927950c-0ea8-4769-9993-e252d70005f3",
+        "f96b20b3-df0e-4d43-a737-e7fa56ff690b",
+        "459a6725-dcc0-4967-8cd4-a9bbb1548eda",
+        "459a6725-dcc0-4967-8cd4-a9bbb1548eda",
+        "74d1da3a-9d90-43ea-8ead-f7968c4d562d",
+        "74d1da3a-9d90-43ea-8ead-f7968c4d562d",
+        "622f072b-bdab-412b-9da4-f59116940a95",
+        "20c810de-ad56-49ad-a57c-7fe7262b3cda",
+        "ddd62eb0-4699-4fb0-9b63-43769186b509",
+        "3cd0e141-6115-4719-a09e-8e0867fe567c",
+        "dc0ba4ea-6f6e-475f-899c-88ad45ccae94",
+        "05fa104f-3719-41d0-9189-57ff3ec5edc1",
+        "315b5cb9-b5a6-42af-9f32-a89079ab42cc"
+      ]
+    }
+  },
+  _linked: {
+    houses: [
+      {
+        id: "Brobnar",
+        name: "Brobnar",
+        image: "https://cdn.keyforgegame.com/media/houses/Brobnar_RTivg44.png"
+      },
+      {
+        id: "Untamed",
+        name: "Untamed",
+        image: "https://cdn.keyforgegame.com/media/houses/Untamed_bXh9SJD.png"
+      },
+      {
+        id: "Dis",
+        name: "Dis",
+        image: "https://cdn.keyforgegame.com/media/houses/Dis_OooSNPO.png"
+      }
+    ],
+    cards: [
+      {
+        id: "3bdfeeec-0424-469b-b169-8e5ad6821e95",
+        card_title: "Bilgum Avalanche",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_28_VP32QGRWMRW3_en.png",
+        card_text: "After you forge a key, deal 2<D> to each enemy creature.",
+        traits: "Giant",
+        amber: 0,
+        power: 5,
+        armor: 0,
+        rarity: "Rare",
+        flavor_text:
+          "“Some call her ‘warleader.’ Some call her ‘demon.’ I just call her ‘Avalanche.’” –Dodger",
+        card_number: 28,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "d4f666db-302f-43d0-b0af-bd03071f92ce",
+        card_title: "Ganger Chieftain",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_33_FGH2M9G9W45J_en.png",
+        card_text: "Play: You may ready and fight with a neighboring creature.",
+        traits: "Giant",
+        amber: 0,
+        power: 5,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "It takes two to fight, but more is better. ",
+        card_number: 33,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "622f072b-bdab-412b-9da4-f59116940a95",
+        card_title: "Troop Call",
+        house: "Untamed",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_337_WP75XF628MRC_en.png",
+        card_text:
+          "Play: Return each friendly Niffle creature from your discard pile and from play to your hand.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: null,
+        card_number: 337,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "3d650fe4-817a-4922-ba0f-297c1ebf816d",
+        card_title: "Screechbomb",
+        house: "Brobnar",
+        card_type: "Artifact",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_26_WGX3X54PQCMP_en.png",
+        card_text: "Omni: Sacrifice Screechbomb. Your opponent loses 2<A>.",
+        traits: "Weapon",
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text:
+          "“I think that thing made me deaf!”\u000b“What? I can’t hear you! I think that thing made me deaf!” ",
+        card_number: 26,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "f79ad4c9-4c3c-461c-b0e7-c949bb46d270",
+        card_title: "Blood of Titans",
+        house: "Brobnar",
+        card_type: "Upgrade",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_50_3GJFRPFVMF7M_en.png",
+        card_text: "This creature gets +5 power.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: "“Blood of Giants? Why stop there?”  –Pingle Who Annoys",
+        card_number: 50,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "10715fd2-031a-47ca-9119-9b7b2ec1d2c0",
+        card_title: "Fear",
+        house: "Dis",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_58_7RV7CX53R83P_en.png",
+        card_text: "Play: Return an enemy creature to its owner’s hand.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: null,
+        card_number: 58,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "62c1aa96-491a-4dbe-a5a3-6895d55e2311",
+        card_title: "Key Hammer",
+        house: "Dis",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_66_RR9GCHVXP44C_en.png",
+        card_text:
+          "Play: If your opponent forged a key on their previous turn, unforge it. Your opponent gains 6<A>. ",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: "What time is it?",
+        card_number: 66,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "74d1da3a-9d90-43ea-8ead-f7968c4d562d",
+        card_title: "Regrowth",
+        house: "Untamed",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_332_R2GQWP4RXCM4_en.png",
+        card_text:
+          "Play: Return a creature from your discard pile to your hand.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "“Deep in the heart of every bear, one can find...another bear.” -Dr. Escotera",
+        card_number: 332,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "e9aefff3-acef-41e3-8258-182588f2b24c",
+        card_title: "Unguarded Camp",
+        house: "Brobnar",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_17_64F73PR27H7P_en.png",
+        card_text:
+          "Play: For each creature you have in excess of your opponent, a friendly creature captures 1<A>. Each creature cannot capture more than 1<A> this way.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: null,
+        card_number: 17,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "459a6725-dcc0-4967-8cd4-a9bbb1548eda",
+        card_title: "Lost in the Woods",
+        house: "Untamed",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_327_W6VV383R4X8P_en.png",
+        card_text:
+          "Play: Choose 2 friendly creatures and 2 enemy creatures. Shuffle each chosen creature into its owner’s deck.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: null,
+        card_number: 327,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "050b35ae-461a-4630-a8df-a60b2652fc2b",
+        card_title: "Wardrummer",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_49_3J962PMQJRJ6_en.png",
+        card_text:
+          "Play: Return each other friendly Brobnar creature to your hand.",
+        traits: "Goblin",
+        amber: 0,
+        power: 3,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: null,
+        card_number: 49,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "d42dd1d0-3462-410f-b683-dd0768b84188",
+        card_title: "Hand of Dis",
+        house: "Dis",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_62_8WF3JF84X9VM_en.png",
+        card_text: "Play: Destroy a creature that is not on a flank.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "“Let me give you a hand...”",
+        card_number: 62,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "23a96d73-4eb2-4c45-9550-8207145eb587",
+        card_title: "Lash of Broken Dreams",
+        house: "Dis",
+        card_type: "Artifact",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_75_5WF77V8WRRPP_en.png",
+        card_text: "Action: Keys cost +3<A> during your opponent’s next turn.",
+        traits: "Weapon",
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "“At first, I thought that nothing could harm an Archon.”  –Captain Val Jericho",
+        card_number: 75,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "fc3d397a-3a51-4963-940c-6b43221b7667",
+        card_title: "Bumpsy",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_30_X82H79CQ6XH6_en.png",
+        card_text: "Play: Your opponent loses 1<A>.",
+        traits: "Giant",
+        amber: 0,
+        power: 5,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "Whatever he doesn’t like, he breaks. He doesn’t like anything.",
+        card_number: 30,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "1ad71526-2782-4e56-a7b9-a0579fd63688",
+        card_title: "Loot the Bodies",
+        house: "Brobnar",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_10_48CVW9F66MJ8_en.png",
+        card_text:
+          "Play: For the remainder of the turn, gain 1<A> each time an enemy creature is destroyed.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "“Loot the Bodies! Hit the Floor! Loot the Bodies! Hit the Floor!” –Brobnar War Chant",
+        card_number: 10,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "d792387f-8392-49b3-ad7c-ccaf7552256f",
+        card_title: "Hebe the Huge",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_36_73MRHJRCWXP4_en.png",
+        card_text: "Play: Deal 2<D> to each other undamaged creature.",
+        traits: "Giant • Knight",
+        amber: 0,
+        power: 6,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: "He’s much bigger in person. ",
+        card_number: 36,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "bb0dc3dc-b591-447d-a181-1dc4907e3eaa",
+        card_title: "Troll",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_48_CPX86RFXW765_en.png",
+        card_text: "Reap: Troll heals 3 damage.",
+        traits: "Giant",
+        amber: 0,
+        power: 8,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "Don’t feed it, it’ll go away.",
+        card_number: 48,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "ddd62eb0-4699-4fb0-9b63-43769186b509",
+        card_title: "Snufflegator",
+        house: "Untamed",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_358_C2FM8V788JM5_en.png",
+        card_text:
+          "Skirmish. (When you use this creature to fight, it is dealt no damage in return.)",
+        traits: "Beast",
+        amber: 0,
+        power: 4,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "“Well, it’s a snufflegator, ain’t it?” –Dodger",
+        card_number: 358,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "dc0ba4ea-6f6e-475f-899c-88ad45ccae94",
+        card_title: "Niffle Ape",
+        house: "Untamed",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_363_3RCHH4F7H4XF_en.png",
+        card_text: "While Niffle Ape is attacking, ignore taunt and elusive.",
+        traits: "Beast • Niffle",
+        amber: 0,
+        power: 3,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "“Did it just say Niffle?” –Captain Val Jericho",
+        card_number: 363,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "05fa104f-3719-41d0-9189-57ff3ec5edc1",
+        card_title: "Witch of the Eye",
+        house: "Untamed",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_368_MC5PG9FQ3766_en.png",
+        card_text: "Reap: Return a card from your discard pile to your hand.",
+        traits: "Human • Witch",
+        amber: 0,
+        power: 3,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "“Waste not, want not.”",
+        card_number: 368,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "20c810de-ad56-49ad-a57c-7fe7262b3cda",
+        card_title: "Nepenthe Seed",
+        house: "Untamed",
+        card_type: "Artifact",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_341_M3P5Q4RWG42_en.png",
+        card_text:
+          "Omni: Sacrifice Nepenthe Seed. Return a card from your discard pile to your hand.",
+        traits: "Item",
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: null,
+        card_number: 341,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "0c3231e1-1230-4e7d-890e-6d3149125de2",
+        card_title: "Headhunter",
+        house: "Brobnar",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_35_M3H9MVCF63W7_en.png",
+        card_text: "Fight: Gain 1<A>.",
+        traits: "Giant",
+        amber: 0,
+        power: 5,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "“I mean, I think it’s a head...”",
+        card_number: 35,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "c1494f7b-eb87-4c64-9405-871579af1f80",
+        card_title: "Guilty Hearts",
+        house: "Dis",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_61_HM8RPQWR5X46_en.png",
+        card_text: "Play: Destroy each creature with any <A> on it.",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Rare",
+        flavor_text: "C’mon, take it. You know you want to.",
+        card_number: 61,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "315b5cb9-b5a6-42af-9f32-a89079ab42cc",
+        card_title: "Way of the Bear",
+        house: "Untamed",
+        card_type: "Upgrade",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_369_3822X74RGM8F_en.png",
+        card_text:
+          "This creature gains assault 2. (Before this creature attacks, deal 2<D> to the attacked enemy.)",
+        traits: null,
+        amber: 1,
+        power: 0,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: null,
+        card_number: 369,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "3cd0e141-6115-4719-a09e-8e0867fe567c",
+        card_title: "Murmook",
+        house: "Untamed",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_361_WHJM9F6QF2MF_en.png",
+        card_text: "Your opponent’s keys cost +1<A>.",
+        traits: "Beast",
+        amber: 0,
+        power: 3,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "“Look out for the pincers and don’t make it crabby. “ –Dr. Escotera",
+        card_number: 361,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "f96b20b3-df0e-4d43-a737-e7fa56ff690b",
+        card_title: "Full Moon",
+        house: "Untamed",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_323_CMWHFWX8HM52_en.png",
+        card_text:
+          "Play: For the remainder of the turn, gain 1<A> each time you play a creature.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "”Mathematically, a moon orbiting the Crucible is impossible.”\u000b”Then what is that?!”",
+        card_number: 323,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "be492d70-5c87-441e-8223-79fb2bce85c9",
+        card_title: "Gateway to Dis",
+        house: "Dis",
+        card_type: "Action",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_59_WW6PQP2CGM8H_en.png",
+        card_text: "Play: Destroy each creature. Gain 3 chains.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: null,
+        card_number: 59,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "f97316b0-75a4-45a4-8735-15e72cc1568c",
+        card_title: "Dust Imp",
+        house: "Dis",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_83_9V7X379WFV8V_en.png",
+        card_text: "Destroyed: Gain 2<A>.",
+        traits: "Imp",
+        amber: 0,
+        power: 2,
+        armor: 0,
+        rarity: "Common",
+        flavor_text: "When the demon’s away, the imps will play.",
+        card_number: 83,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "ba26515f-1705-45ba-ae42-dcb65685a0ec",
+        card_title: "Tentacus",
+        house: "Dis",
+        card_type: "Creature",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_100_WQWQX27FH7M2_en.png",
+        card_text:
+          "Your opponent must pay you 1<A> in order to use an artifact.",
+        traits: "Demon",
+        amber: 0,
+        power: 5,
+        armor: 0,
+        rarity: "Uncommon",
+        flavor_text: null,
+        card_number: 100,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "c927950c-0ea8-4769-9993-e252d70005f3",
+        card_title: "Collar of Subordination",
+        house: "Dis",
+        card_type: "Upgrade",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_105_Q3C3948M2HPH_en.png",
+        card_text: "You control this creature.",
+        traits: null,
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Rare",
+        flavor_text: "“OBEY.”",
+        card_number: 105,
+        expansion: 341,
+        is_maverick: false
+      },
+      {
+        id: "96548d93-b318-40e3-9f5c-3297c8070ebd",
+        card_title: "Dominator Bauble",
+        house: "Dis",
+        card_type: "Artifact",
+        front_image:
+          "https://cdn.keyforgegame.com/media/card_front/en/341_73_QRQ93X7RG4J9_en.png",
+        card_text: "Action: Use a friendly creature.",
+        traits: "Item",
+        amber: 0,
+        power: 0,
+        armor: 0,
+        rarity: "Common",
+        flavor_text:
+          "“I know I shouldn’t’a nicked it, but ‘twere so…shiny. –Noddy the Thief",
+        card_number: 73,
+        expansion: 341,
+        is_maverick: false
+      }
+    ]
+  }
+};
+
+const mockSearchData = {
   count: 76,
   data: [
     {

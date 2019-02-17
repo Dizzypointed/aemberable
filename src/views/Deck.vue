@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div v-if="deck" class="main">
     <router-link :to="{name:'decks', query: {q: query}}">tillbaka</router-link>
     <div v-if="selectedCard" class="selected-creature">
       <button class="close" type="button" @click="deselect()">&times;</button>
@@ -111,6 +111,10 @@ export default class Start extends Vue {
 
   private selectedCardKey = "";
 
+  created() {
+    store.dispatch(actions.selectDeck, router.currentRoute.params.id);
+  }
+
   get selectedCard() {
     return this.playedCreatures.find(
       (c: any) => c.key === this.selectedCardKey
@@ -152,9 +156,7 @@ export default class Start extends Vue {
   }
 
   get deck() {
-    return store.getters.getViewDecks.find(
-      (d: ViewDeck) => d.id === router.currentRoute.params.id
-    );
+    return store.getters.getViewDeck;
   }
 
   cards(house: House) {

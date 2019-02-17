@@ -5,16 +5,18 @@ import ViewDeck from "@/model/viewDeck";
 
 class _Deckfactory {
   viewDeck(deck: Deck, houses: House[], cards: Card[]): ViewDeck {
-    return {
-      id: deck.id,
-      name: deck.name,
-      houses: <Array<House>>(
-        deck.houses.map(id => houses.find(h => h.id === id)).filter(h => h)
-      ),
-      cards: <Array<Card>>(
-        deck.cards.map(id => cards.find(c => c.id === id)).filter(c => c)
-      )
-    };
+    return (
+      deck && {
+        id: deck.id,
+        name: deck.name,
+        houses: <Array<House>>(
+          deck.houses.map(id => houses.find(h => h.id === id)).filter(h => h)
+        ),
+        cards: <Array<Card>>(
+          deck.cards.map(id => cards.find(c => c.id === id)).filter(c => c)
+        )
+      }
+    );
   }
 
   deck(data: any): Deck {
