@@ -3,35 +3,61 @@
     <router-link :to="{name:'decks', query: {q: query}}">tillbaka</router-link>
     <div v-if="selectedCard" class="selected-creature">
       <button class="close" type="button" @click="deselect()">&times;</button>
-      <img :src="selectedCard.front_image" alt>
-      <div>
-        <label for="power">Wounds</label>
-        <div>
-          <button type="button" @click="increment('tmp_wounds', -1)">-</button>
-          <input type="number" min="0" name="wounds" id="wounds" v-model="selectedCard.tmp_wounds">
-          <button type="button" @click="increment('tmp_wounds', 1)">+</button>
+      <div style="position: relative">
+        <div style="position: absolute; display: flex; justify-content: space-around">
+          <button @click="selectedCard.tmp_wounds = selectedCard.tmp_power">kill</button>
+        </div>
+        <transition name="pulse">
+          <div
+            :hidden="selectedCard.tmp_wounds < 1"
+            :key="selectedCard.tmp_wounds"
+            class="wounds"
+          >{{selectedCard.tmp_wounds}}</div>
+        </transition>
+        <img :src="selectedCard.front_image" alt>
+        <div class="death" :hidden="this.selectedCard.tmp_wounds < this.selectedCard.tmp_power">
+          <!-- <img
+            src="../assets/blood.jpg"
+          >-->
         </div>
       </div>
-      <div>
-        <label for="power">Armor</label>
+      <div class="stats">
         <div>
-          <button type="button" @click="increment('tmp_armor', -1)">-</button>
-          <input type="number" min="0" name="armor" id="armor" v-model="selectedCard.tmp_armor">
-          <button type="button" @click="increment('tmp_armor', 1)">+</button>
+          <label for="wounds">Wounds</label>
+          <div>
+            <button type="button" @click="increment('tmp_wounds', -1)">-</button>
+            <input
+              type="number"
+              min="0"
+              name="wounds"
+              id="wounds"
+              v-model="selectedCard.tmp_wounds"
+            >
+            <button type="button" @click="increment('tmp_wounds', 1)">+</button>
+          </div>
         </div>
-      </div>
-      <div>
-        <label for="power">Power</label>
         <div>
-          <button type="button" @click="increment('tmp_power', -1)">-</button>
-          <input type="number" min="0" name="power" id="power" v-model="selectedCard.tmp_power">
-          <button type="button" @click="increment('tmp_power', 1)">+</button>
+          <label for="armor">Armor</label>
+          <div>
+            <button type="button" @click="increment('tmp_armor', -1)">-</button>
+            <input type="number" min="0" name="armor" id="armor" v-model="selectedCard.tmp_armor">
+            <button type="button" @click="increment('tmp_armor', 1)">+</button>
+          </div>
+        </div>
+        <div>
+          <label for="power">Power</label>
+          <div>
+            <button type="button" @click="increment('tmp_power', -1)">-</button>
+            <input type="number" min="0" name="power" id="power" v-model="selectedCard.tmp_power">
+            <button type="button" @click="increment('tmp_power', 1)">+</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="payed-creatures">
       <ul>
         <li v-for="card in playedCreatures" :key="card.key">
+          <div :hidden="card.tmp_wounds < 1" class="wounds">{{card.tmp_wounds}}</div>
           <img :src="card.front_image" @click="select(card)">
         </li>
       </ul>
@@ -83,10 +109,12 @@ export default class Start extends Vue {
 
   playedCreatures = new Array<any>();
 
-  private selectedCardId = "";
+  private selectedCardKey = "";
 
   get selectedCard() {
-    return this.playedCreatures.find((c: any) => c.id === this.selectedCardId);
+    return this.playedCreatures.find(
+      (c: any) => c.key === this.selectedCardKey
+    );
   }
 
   query = store.state.query.selected;
@@ -98,20 +126,28 @@ export default class Start extends Vue {
   }
 
   deselect() {
-    this.selectedCardId = "";
+    if (this.selectedCard.tmp_wounds >= this.selectedCard.tmp_power) {
+      this.playedCreatures = this.playedCreatures.filter(
+        c => c.key !== this.selectedCard.key
+      );
+    }
+    this.selectedCardKey = "";
   }
 
-  select(card: Card) {
-    this.selectedCardId = card.id;
+  select(card: any) {
+    this.selectedCardKey = card.key;
   }
 
   play() {
     this.playedCreatures.push({
       ...this.enlarged,
+      key: `${this.enlarged.id}:${this.playedCreatures.length}`,
       tmp_power: this.enlarged.power,
       tmp_armor: this.enlarged.armor,
       tmp_wounds: 0
     });
+    console.log(`${this.enlarged.id}:${this.playedCreatures.length}`);
+
     this.shrink();
   }
 
@@ -139,10 +175,7 @@ export default class Start extends Vue {
 
 <style lang="scss" scoped>
 .deck {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex: 1 0 auto;
   max-height: 70vh;
   font-size: 1em;
   font-weight: 600;
@@ -167,6 +200,7 @@ export default class Start extends Vue {
 
 .house {
   margin: 0 5px;
+  flex: 1;
 
   img {
     width: 2.5em;
@@ -198,7 +232,6 @@ export default class Start extends Vue {
 .cards {
   display: flex;
   flex-flow: wrap;
-  justify-content: center;
 }
 .card {
   width: 33%;
@@ -216,6 +249,9 @@ export default class Start extends Vue {
 }
 .main {
   margin: 0 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 
   @media (max-width: 415px) {
     margin: 0;
@@ -251,9 +287,6 @@ export default class Start extends Vue {
 }
 
 .payed-creatures {
-  position: absolute;
-  left: 0;
-  right: 0;
   height: 24vh;
 
   ul,
@@ -265,6 +298,12 @@ export default class Start extends Vue {
     display: flex;
     overflow-x: scroll;
     overflow-y: hidden;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   img {
@@ -323,17 +362,21 @@ export default class Start extends Vue {
       font-weight: 600;
       cursor: pointer;
       font-size: 20px;
+    }
 
-      &:first-of-type {
-        border-right: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
+    &.stats {
+      button {
+        &:first-of-type {
+          border-right: 0;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
 
-      &:last-of-type {
-        border-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        &:last-of-type {
+          border-left: 0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
       }
     }
   }
@@ -361,6 +404,68 @@ export default class Start extends Vue {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     font-weight: 600;
     font-size: 20px;
+  }
+}
+
+.wounds {
+  position: absolute;
+  background-color: #d72129;
+  text-shadow: 0px 2px 1px #600;
+  font-weight: 600;
+  color: #fff;
+}
+
+.payed-creatures {
+  .wounds {
+    font-size: 14px;
+    padding: 1px 5px;
+    border-radius: 10px;
+    border: 1px solid #000;
+  }
+}
+
+.selected-creature {
+  .wounds {
+    font-size: 28px;
+    width: 35px;
+    height: 35px;
+    border: 2px solid #000;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    transform: translate(0, 192px);
+
+    &[hidden="hidden"] {
+      display: none;
+    }
+  }
+}
+
+.pulse-enter-active {
+  animation: pulse 0.5s;
+}
+@keyframes pulse {
+  0% {
+    opacity: 0;
+    transform: scale(2) translate(0, 95px);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+div.death {
+  position: absolute;
+  background-image: url("../assets/blood.jpg");
+  width: 100vw;
+  height: 547px;
+  transition: height 0.5s ease;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0.9;
+
+  &[hidden="hidden"] {
+    height: 0;
   }
 }
 </style>
