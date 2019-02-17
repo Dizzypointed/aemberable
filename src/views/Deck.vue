@@ -52,9 +52,17 @@
             <button type="button" @click="increment('tmp_power', 1)">+</button>
           </div>
         </div>
+        <div>
+          <label for="power">Captured &aelig;mber</label>
+          <div>
+            <button type="button" @click="increment('tmp_amber', -1)">-</button>
+            <input type="number" min="0" name="power" id="power" v-model="selectedCard.tmp_amber">
+            <button type="button" @click="increment('tmp_amber', 1)">+</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="payed-creatures">
+    <div class="played-creatures">
       <ul>
         <li v-for="card in playedCreatures" :key="card.key">
           <div :hidden="card.tmp_wounds < 1" class="wounds">{{card.tmp_wounds}}</div>
@@ -62,13 +70,16 @@
         </li>
       </ul>
     </div>
+    <div class="victory-conditions">
+      <div class="aember"></div>
+    </div>
     <div class="deck">
       <div class="deck-name">
         <div>{{deck.name}}</div>
         <div>
           {{deck.cards.reduce((prev, card) => prev + card.amber, 0)}} &AElig;mber,
-          {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} power,
-          {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} armor
+          {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} Power,
+          {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} Armor
         </div>
       </div>
       <ul class="houses">
@@ -148,7 +159,8 @@ export default class Start extends Vue {
       key: `${this.enlarged.id}:${this.playedCreatures.length}`,
       tmp_power: this.enlarged.power,
       tmp_armor: this.enlarged.armor,
-      tmp_wounds: 0
+      tmp_wounds: 0,
+      tmp_amber: 0
     });
     console.log(`${this.enlarged.id}:${this.playedCreatures.length}`);
 
@@ -288,7 +300,7 @@ export default class Start extends Vue {
   }
 }
 
-.payed-creatures {
+.played-creatures {
   height: 24vh;
 
   ul,
@@ -300,6 +312,7 @@ export default class Start extends Vue {
     display: flex;
     overflow-x: scroll;
     overflow-y: hidden;
+    margin: 0;
   }
 
   li {
@@ -417,7 +430,7 @@ export default class Start extends Vue {
   color: #fff;
 }
 
-.payed-creatures {
+.played-creatures {
   .wounds {
     font-size: 14px;
     padding: 1px 5px;

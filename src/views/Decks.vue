@@ -12,8 +12,8 @@
               <div>{{deck.name}}</div>
               <div>
                 {{deck.cards.reduce((prev, card) => prev + card.amber, 0)}} &AElig;mber,
-                {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} power,
-                {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} armor
+                {{deck.cards.reduce((prev, card) => prev + card.power, 0)}} Power,
+                {{deck.cards.reduce((prev, card) => prev + card.armor, 0)}} Armor
               </div>
             </div>
             <ul class="houses">

@@ -1,12 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import KeyforgeApi from "./api/keyforge.api";
+
+import { Deckfactory } from "./api/factory";
 import keyforgeApi from "./api/keyforge.api";
-import { tap } from "rxjs/operators";
-import House from "./model/house";
 import Card from "./model/card";
 import Deck from "./model/deck";
-import { Deckfactory } from "./api/factory";
+import House from "./model/house";
 
 Vue.use(Vuex);
 
